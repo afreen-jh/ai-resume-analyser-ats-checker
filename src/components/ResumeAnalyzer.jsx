@@ -69,7 +69,7 @@ export default function ResumeAnalyzer() {
 
             <div>
               <h1 className="font-black text-xl tracking-tight bg-gradient-to-r from-teal-600 via-cyan-600 to-indigo-600 bg-clip-text text-transparent">
-                AI RESUME ANALYZER & ATS CHECKER
+                AI RESUME ANALYSER & ATS CHECKER
               </h1>
             </div>
           </div>

@@ -12,7 +12,7 @@ export default function ResumeAnalyzer() {
           <LogoIcon />
           {/* Enhanced heading text style with a dark slate tone */}
           <h1 className="text-xl font-extrabold text-slate-800 tracking-wide uppercase">
-            AI Resume Analyzer & ATS Checker
+            AI Resume Analyser & ATS Checker
           </h1>
         </div>
 
