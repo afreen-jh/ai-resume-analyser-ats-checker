@@ -69,15 +69,37 @@ export default function ResumeAnalyzer() {
     console.error("File input reference is not connected!");
   }
 };
+const handleRunComparison = async () => {
+  if (!jobTitle || !skills || !jobDescription || !file) {
+    alert("Please complete target profile criteria and upload a resume before running execution");
+    return;
+  }
+  
+  console.log("Executing score alignment pipeline...", { jobTitle, skills, jobDescription, file });
+  
+  const formData = new FormData();
+  formData.append('resume', file);
+  formData.append('jobTitle', jobTitle);
+  formData.append('skills', skills);
+  formData.append('jobDescription', jobDescription);
 
-  const handleRunComparison = () => {
-    if (!jobTitle || !skills || !jobDescription || !file) {
-      alert("Please complete target profile criteria and upload a resume before running execution.");
-      return;
-    }
-    console.log("Executing score alignment pipeline...", { jobTitle, skills, jobDescription, file });
-    // TODO: Connect fetch API pipeline to backend controller endpoint here
-  };
+  try {
+    const response = await fetch('/api/analyze', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await response.json();
+    console.log("Backend response data:", data);
+
+    // Agar aapke component mein data set karne ke liye koi state function (jaise setAnalysisData ya setResult) hai, 
+    // toh use yahan data ke sath link karein. For example:
+    // setAnalysisResult(data); 
+
+  } catch (error) {
+    console.error("Error connecting to backend API:", error);
+  }
+};
 
   return (
     <div className="min-h-screen bg-slate-50 p-6 font-sans text-slate-800">
