@@ -2,9 +2,25 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import multer from "multer";
-import { GoogleGenerativeAI } from "@google/generative-ai"; // 🔴 FIXED THIS LINE
+import mongoose from "mongoose";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 dotenv.config();
+
+// Debug check for API Key
+if (!process.env.GEMINI_API_KEY) {
+  console.error("⚠️ GEMINI_API_KEY is missing from environment variables!");
+} else {
+  console.log("🔑 GEMINI_API_KEY loaded successfully.");
+}
+
+// Database Connection
+const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/ai_resume_db";
+
+mongoose
+  .connect(MONGO_URI)
+  .then(() => console.log("✅ Database Connected Successfully!"))
+  .catch((err) => console.error("❌ Database Connection Error:", err));
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -13,23 +29,25 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Configure Multer for file uploads (Memory Storage)
+// Configure Multer
 const upload = multer({ storage: multer.memoryStorage() });
 
-// 🔴 FIXED THIS LINE
+// Initialize Gemini Client
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// API Route for Resume Analysis
+// API Route
 app.post("/api/analyze", upload.single("resume"), async (req, res) => {
   try {
     const { jobTitle, skills, jobDescription } = req.body;
     const file = req.file;
 
     if (!file) {
+      console.error("❌ No file attached in request body.");
       return res.status(400).json({ error: "No resume file uploaded" });
     }
 
-    // Convert PDF buffer to Google Gen AI part object
+    console.log(`📄 Processing file: ${file.originalname} (${file.mimetype})`);
+
     const resumePart = {
       inlineData: {
         data: file.buffer.toString("base64"),
@@ -50,20 +68,26 @@ Provide a structured evaluation containing:
 3. Practical recommendations to improve the resume.
 `;
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // Initialize Gemini model
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const result = await model.generateContent([prompt, resumePart]);
     const response = await result.response;
     const analysisText = response.text();
 
-    // Send the generated evaluation text back to frontend
+    console.log("✅ Resume analysis complete!");
     res.json({ score: analysisText });
-
   } catch (error) {
-    console.error("Backend pipeline error:", error);
-    res.status(500).json({ error: "Failed to process resume analysis" });
+    // PRINT DETAILED ERROR TO BACKEND TERMINAL
+    console.error("================ ❌ API ERROR DETAILS ❌ ================");
+    console.error(error);
+    console.error("=========================================================");
+
+    res.status(500).json({ 
+      error: error.message || "Failed to process resume analysis" 
+    });
   }
 });
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`🚀 Server running on port ${port}`);
 });

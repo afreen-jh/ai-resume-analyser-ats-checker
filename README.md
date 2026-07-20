@@ -1,16 +1,32 @@
-# React + Vite
+# AI Resume Analyser and ATS Checker
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+An AI-powered MERN stack application designed to analyze resumes against job descriptions, calculate ATS compatibility scores, and provide actionable feedback for improvement.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Features
 
-## React Compiler
+* **AI Resume Analysis:** Uses Google Generative AI (Gemini) to evaluate resume content.
+* **ATS Compatibility Score:** Calculates how well your resume matches a job description.
+* **User Authentication:** Secure JWT-based registration and login system.
+* **File Processing:** Fast and secure upload/extraction of PDF and document resumes.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the Oxlint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+* **Frontend:** React, Tailwind CSS, Vite
+* **Backend:** Node.js, Express.js
+* **Database:** MongoDB, Mongoose
+* **AI Integration:** Google Generative AI (`@google/generative-ai`)
+
+---
+
+## 📁 Project Structure
+
+```text
+ai-resume-analyser/
+├── backend/          # Express API server & Mongoose models
+├── frontend/         # React client interface
+├── README.md         # Documentation
+└── .gitignore

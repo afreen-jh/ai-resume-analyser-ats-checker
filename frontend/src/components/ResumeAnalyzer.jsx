@@ -84,11 +84,10 @@ const handleRunComparison = async () => {
   formData.append('jobDescription', jobDescription);
 
   try {
-    const response = await fetch('/api/analyze', {
-      method: 'POST',
-      body: formData,
-    });
-
+    const response = await fetch("http://localhost:5000/api/analyze", {
+  method: "POST",
+  body: formData,
+});
     const data = await response.json();
     console.log("Backend response data:", data);
 
